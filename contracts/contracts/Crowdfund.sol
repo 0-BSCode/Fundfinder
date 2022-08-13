@@ -1,13 +1,19 @@
 pragma solidity >=0.4.22 <0.9.0;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract Crowdfund {
     using Strings for string;
+    using SafeMath for uint256;
 
     event goalFunded(address indexed _from, uint256 indexed _goalId);
     event goalCompleted(uint256 indexed _goalId);
     event goalCreated(uint256 indexed _goalId);
+    event refundSent(uint256 indexed _goalId);
+    event debugMessage(string _message);
+    event debugValue(string _description, uint256 _value);
+    event debugBool(string _description, bool _bool);
 
     struct Goal {
         uint256 id;
@@ -146,7 +152,9 @@ contract Crowdfund {
 
         goals[goalNumber] = newGoal;
         accounts[_owner].goals.push(goalNumber);
-        accounts[_owner].activeGoalCount++;
+        accounts[_owner].activeGoalCount = accounts[_owner].activeGoalCount.add(
+            1
+        );
         goalNumber++;
 
         emit goalCreated(newGoal.id);
@@ -199,14 +207,19 @@ contract Crowdfund {
         goalIsActive(_goalId)
         notOwner(goals[_goalId].owner)
     {
-        goals[_goalId].currentAmount += msg.value;
-        if (isRecurringFunder(msg.sender, _goalId)) {
+        goals[_goalId].currentAmount = goals[_goalId].currentAmount.add(
+            msg.value
+        );
+
+        if (!isRecurringFunder(msg.sender, _goalId)) {
             goals[_goalId].funderAddresses.push(msg.sender);
         }
 
-        goalFunders[_goalId][msg.sender] += msg.value;
+        goalFunders[_goalId][msg.sender] = goalFunders[_goalId][msg.sender].add(
+            msg.value
+        );
 
-        if (isRecurringFundee(msg.sender, _goalId)) {
+        if (!isRecurringFundee(msg.sender, _goalId)) {
             accounts[msg.sender].goalsHelped.push(_goalId);
         }
 
@@ -220,13 +233,12 @@ contract Crowdfund {
 
     function sendFunds(uint256 _goalId) public payable {
         require(
-            goals[_goalId].currentAmount >= goals[_goalId].maxAmount,
+            isFundCompleted(_goalId),
             "Funds can only be sent once goal has been reached"
         );
         address _owner = goals[_goalId].owner;
         address payable _account = payable(_owner);
         _account.transfer(goals[_goalId].currentAmount);
-        deactivateGoal(_goalId);
         emit goalCompleted(_goalId);
     }
 
@@ -243,11 +255,15 @@ contract Crowdfund {
             address payable _account = payable(funderAddresses[i]);
             _account.transfer(goalFunders[_goalId][funderAddresses[i]]);
         }
+
+        emit refundSent(_goalId);
     }
 
     function deactivateGoal(uint256 _goalId) private {
         goals[_goalId].isActive = false;
-        accounts[goals[_goalId].owner].activeGoalCount--;
+        accounts[goals[_goalId].owner].activeGoalCount = accounts[
+            goals[_goalId].owner
+        ].activeGoalCount.sub(1);
     }
 
     function isDeadlineReached(uint256 _goalId) private view returns (bool) {
@@ -255,7 +271,6 @@ contract Crowdfund {
         if (block.timestamp >= goals[_goalId].deadline) {
             res = true;
         }
-
         return res;
     }
 
