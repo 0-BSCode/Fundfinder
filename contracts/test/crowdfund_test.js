@@ -66,9 +66,10 @@ contract("Crowdfund", (accounts) => {
     let ownerNewBalance = await web3.eth.getBalance(accounts[0]);
     let goal = await contract.retrieveGoal(goalId);
 
-    let ownerFunds = ownerNewBalance - ownerOldBalance;
+    let goalFunds = goal["9"].toString();
+    let ownerFunds = (ownerNewBalance - ownerOldBalance).toString();
 
-    assert(ownerFunds > 0, "Funds haven't been sent");
+    assert(ownerFunds === goalFunds, "Funds haven't been sent");
   });
 
   it("Users should get refund if deadline of active goal is reached", async () => {
@@ -94,7 +95,6 @@ contract("Crowdfund", (accounts) => {
     let account1OldBalance = await web3.eth.getBalance(accounts[1]);
     let account2OldBalance = await web3.eth.getBalance(accounts[2]);
 
-    console.log("Waiting");
     await new Promise((r) => setTimeout(r, 6000));
 
     await contract.refundFunders(goalId);
@@ -111,13 +111,105 @@ contract("Crowdfund", (accounts) => {
     );
   });
 
-  it("User should be able to edit profile", async () => {});
+  it("User should be able to edit profile", async () => {
+    let contract = await Crowdfund.deployed();
+    let username = "BOOOB";
+    let picture = "IPFS Hash Something";
+    await contract.updateAccount(accounts[1], username, picture);
+    let account = await contract.retrieveAccount(accounts[1]);
 
-  it("User can't fund a goal without an account", async () => {});
+    assert(
+      account[1] === username && account[2] === picture,
+      "User input doesn't match user profile"
+    );
+  });
 
-  it("User can't fund a goal that doesn't exist", async () => {});
+  it("User can't fund a goal without an account", async () => {
+    let contract = await Crowdfund.deployed();
+    let goalId = 0;
+    let err = null;
 
-  it("User can't fund their own goal", async () => {});
+    try {
+      await contract.fundGoal(goalId, {
+        from: accounts[8],
+        value: web3.utils.toWei("2", "ether"),
+      });
+    } catch (e) {
+      err = e;
+    }
 
-  it("User can't send funds to another user directly", async () => {});
+    assert(
+      (err.data.reason = "Account doesn't exist"),
+      "User is able to fund goal without an account"
+    );
+  });
+
+  it("User can't fund a goal that doesn't exist", async () => {
+    let contract = await Crowdfund.deployed();
+    let goalId = 1000;
+    let err = null;
+
+    try {
+      await contract.fundGoal(goalId, {
+        from: accounts[0],
+        value: web3.utils.toWei("1", "ether"),
+      });
+    } catch (e) {
+      err = e;
+    }
+
+    assert(
+      err.data.reason === "Goal doesn't exist",
+      "User can fund a goal that doesn't exist"
+    );
+  });
+
+  it("User can't fund their own goal", async () => {
+    let contract = await Crowdfund.deployed();
+    let time = new Date().getTime();
+    let timeInSeconds = Math.floor(time / 1000);
+    let { logs } = await contract.createGoal(
+      accounts[0],
+      web3.utils.toWei("3", "ether"),
+      timeInSeconds + 1,
+      "EasyBank Food Drive",
+      "It’s time for EasyBank’s annual food drive, a program that aims to provide stable source of food for local communities in need.",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque placerat rhoncus odio et fermentum. Aliquam egestas, nulla nec ultrices pharetra, erat quam convallis sem, non ultricies libero turpis eu nisi. Nullam sed rutrum urna, eget porttitor felis. Phasellus feugiat diam nec ullamcorper pharetra. Curabitur metus velit, suscipit vitae metus a, blandit iaculis enim. Pellentesque eu arcu posuere, volutpat tellus in, porta erat. Nulla facilisi. Phasellus venenatis mauris at neque porta tincidunt. Etiam pretium id felis et maximus. Donec posuere in felis et tempor. Nulla facilisi.",
+      ""
+    );
+
+    let goalId = parseInt(logs[0].args._goalId.toString());
+    let err = null;
+
+    try {
+      await contract.fundGoal(goalId, {
+        from: accounts[0],
+        value: web3.utils.toWei("2", "ether"),
+      });
+    } catch (e) {
+      err = e;
+    }
+
+    assert(
+      err.data.reason === "Message sender is goal's owner",
+      "User is able to fund own goal"
+    );
+  });
+
+  it("User can't send funds to another user directly", async () => {
+    let contract = await Crowdfund.deployed();
+    let goalId = 2;
+    let err = null;
+
+    try {
+      await contract.sendFunds(goalId);
+    } catch (e) {
+      err = e;
+    }
+
+    assert(
+      err.data.reason === "Funds can only be sent once goal has been reached",
+      "User can send funds to another user directly"
+    );
+  });
 });

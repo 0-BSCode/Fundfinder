@@ -71,7 +71,7 @@ contract Crowdfund {
     }
 
     modifier notOwner(address _owner) {
-        require(msg.sender != _owner, "You can't fund your own goal");
+        require(msg.sender != _owner, "Message sender is goal's owner");
         _;
     }
 
@@ -97,11 +97,13 @@ contract Crowdfund {
         accounts[_owner] = newUser;
     }
 
-    function updateAccount(address _owner, string memory _userName)
-        external
-        accountExists(_owner)
-    {
+    function updateAccount(
+        address _owner,
+        string memory _userName,
+        string memory _picture
+    ) external accountExists(_owner) {
         accounts[_owner].username = _userName;
+        accounts[_owner].picture = _picture;
     }
 
     function retrieveAccount(address _owner)
