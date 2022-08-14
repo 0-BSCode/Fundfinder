@@ -196,7 +196,7 @@ contract("Crowdfund", (accounts) => {
     );
   });
 
-  it("User can't send funds to another user directly", async () => {
+  it("User can't send funds of incomplete goal to goal's owner", async () => {
     let contract = await Crowdfund.deployed();
     let goalId = 2;
     let err = null;
@@ -209,7 +209,7 @@ contract("Crowdfund", (accounts) => {
 
     assert(
       err.data.reason === "Funds can only be sent once goal has been reached",
-      "User can send funds to another user directly"
+      "User can send funds of incomplete goal to goal's owner"
     );
   });
 });
