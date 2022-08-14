@@ -31,11 +31,6 @@ contract Crowdfund {
         address[] funderAddresses;
     }
 
-    struct Funder {
-        address accountId;
-        uint256 contribution;
-    }
-
     struct User {
         address id;
         string username;
@@ -47,20 +42,9 @@ contract Crowdfund {
         bool exists;
     }
 
-    struct Message {
-        uint256 id;
-        uint256 dateCreated;
-        address from;
-        address to;
-        string goal;
-        string content;
-    }
-
     mapping(address => User) accounts;
     mapping(uint256 => Goal) goals;
-    // mapping(uint256 => Funder[]) goalFunders;
     mapping(uint256 => mapping(address => uint256)) goalFunders;
-    mapping(uint256 => Message) messages;
 
     uint256 goalNumber = 0;
     uint256 messageNumber = 0;
