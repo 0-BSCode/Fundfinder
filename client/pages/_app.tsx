@@ -1,8 +1,13 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import "../styles/globals.css";
+import type { AppProps } from "next/app";
+import { CrowdfundProvider } from "src/context/CrowdfundContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <CrowdfundProvider>
+      <Component {...pageProps} />
+    </CrowdfundProvider>
+  );
 }
 
-export default MyApp
+export default MyApp;
