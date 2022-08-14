@@ -47,7 +47,6 @@ contract Crowdfund {
     mapping(uint256 => mapping(address => uint256)) goalFunders;
 
     uint256 goalNumber = 0;
-    uint256 messageNumber = 0;
 
     modifier accountExists(address _owner) {
         require(accounts[_owner].exists == true, "Account doesn't exist");
