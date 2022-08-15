@@ -180,8 +180,52 @@ contract Crowdfund {
         );
     }
 
-    function retrieveGoalCount(address _owner) external view returns (uint256) {
+    function retrieveGoalsCount(address _owner)
+        external
+        view
+        returns (uint256)
+    {
         return accounts[_owner].goals.length;
+    }
+
+    function retrieveGoalIdByIndex(address _owner, uint256 _index)
+        external
+        view
+        returns (uint256)
+    {
+        return accounts[_owner].goals[_index];
+    }
+
+    function retrieveGoalsHelpedCount(address _owner)
+        external
+        view
+        returns (uint256)
+    {
+        return accounts[_owner].goalsHelped.length;
+    }
+
+    function retrieveGoalHelpedIdByIndex(address _owner, uint256 _index)
+        external
+        view
+        returns (uint256)
+    {
+        return accounts[_owner].goalsHelped[_index];
+    }
+
+    function retrieveFunderAddressesCount(uint256 _goalId)
+        external
+        view
+        returns (uint256)
+    {
+        return goals[_goalId].funderAddresses.length;
+    }
+
+    function retrieveFunderAddressByIndex(uint256 _goalId, uint256 _index)
+        external
+        view
+        returns (address)
+    {
+        return goals[_goalId].funderAddresses[_index];
     }
 
     function fundGoal(uint256 _goalId)

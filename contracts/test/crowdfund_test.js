@@ -20,6 +20,7 @@ contract("Crowdfund", (accounts) => {
     let contract = await Crowdfund.deployed();
     let time = new Date().getTime();
     let timeInSeconds = Math.floor(time / 1000);
+    let goalsCountOld = await contract.retrieveGoalsCount(accounts[0]);
     let { logs } = await contract.createGoal(
       accounts[0],
       web3.utils.toWei("3", "ether"),
@@ -31,24 +32,47 @@ contract("Crowdfund", (accounts) => {
     );
 
     let goalId = logs[0].args._goalId.valueOf();
+    let goalsCountNew = await contract.retrieveGoalsCount(accounts[0]);
 
     let newGoal = await contract.retrieveGoal(goalId);
-    assert(newGoal["10"] !== false, "User can't create a goal");
+    assert(
+      newGoal["10"] !== false && goalsCountOld < goalsCountNew,
+      "User can't create a goal"
+    );
   });
 
   it("User should be able to donate to active goal", async () => {
     let contract = await Crowdfund.deployed();
+    let goalsHelpedCountOld = await contract.retrieveGoalsHelpedCount(
+      accounts[1]
+    );
+
     let amount = web3.utils.toWei("1", "ether");
     let goalId = 0;
+    let funderAddressesCountOld = await contract.retrieveFunderAddressesCount(
+      goalId
+    );
 
     await contract.fundGoal(goalId, {
       from: accounts[1],
       value: amount,
     });
 
+    let goalsHelpedCountNew = await contract.retrieveGoalsHelpedCount(
+      accounts[1]
+    );
+    let funderAddressesCountNew = await contract.retrieveFunderAddressesCount(
+      goalId
+    );
+
     let goal = await contract.retrieveGoal(goalId);
 
-    assert(amount === goal["9"].toString(), "User can't donate to active goal");
+    assert(
+      amount === goal["9"].toString() &&
+        goalsHelpedCountOld < goalsHelpedCountNew &&
+        funderAddressesCountOld < funderAddressesCountNew,
+      "User can't donate to active goal"
+    );
   });
 
   it("Goal owner should receive funds if goal is completed", async () => {
