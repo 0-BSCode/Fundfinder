@@ -6,6 +6,8 @@ import parseResponseForUser from "src/utils/parseResponseForUser";
 import { CrowdfundContextType } from "src/types/crowdfundContext";
 import { ContractActions } from "src/enums/contractActions";
 import parseErrorMessage from "src/utils/parseErrorMessage";
+import { Goal } from "src/types/goal";
+import parseResponseForGoal from "src/utils/parseResponseForGoal";
 
 export const CrowdfundContext = React.createContext<CrowdfundContextType>(
   {} as CrowdfundContextType
@@ -18,6 +20,7 @@ export const CrowdfundProvider = ({
 }): ReactElement => {
   const [ethereum, setEthereum] = useState<ethers.providers.ExternalProvider>();
   const [currentUser, setCurrentUser] = useState<User>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const createEthereumContract = () => {
     const provider = new ethers.providers.Web3Provider(
@@ -70,17 +73,19 @@ export const CrowdfundProvider = ({
     }
   };
 
-  const createAccount = async (accountId: string) => {
+  const createUser = async (accountId: string) => {
     const contract = createEthereumContract();
     try {
       const txHash = await contract.createAccount(accountId);
+      setIsLoading(true);
       await txHash.wait();
+      setIsLoading(false);
     } catch (err) {
       console.error(parseErrorMessage(ContractActions.ACCOUNT_CREATE, err));
     }
   };
 
-  const updateAccount = async (
+  const updateUser = async (
     accountId: string,
     username: string,
     picture: string
@@ -88,7 +93,10 @@ export const CrowdfundProvider = ({
     const contract = createEthereumContract();
 
     try {
-      await contract.updateAccount(accountId, username, picture);
+      const txHash = await contract.updateAccount(accountId, username, picture);
+      setIsLoading(true);
+      await txHash.wait();
+      setIsLoading(false);
     } catch (err) {
       console.error(parseErrorMessage(ContractActions.ACCOUNT_UPDATE, err));
     }
@@ -101,7 +109,7 @@ export const CrowdfundProvider = ({
       user = await retrieveUser(accountId);
 
       if (!user?.id?.length) {
-        await createAccount(accountId);
+        await createUser(accountId);
         user = await retrieveUser(accountId);
       }
       console.log("USER");
@@ -125,13 +133,73 @@ export const CrowdfundProvider = ({
     return user;
   };
 
-  const createGoal = async () => {};
+  const createGoal = async (
+    title: string,
+    description: string,
+    details: string,
+    picture: string,
+    maxAmount: number,
+    deadline: number
+  ) => {
+    let contract = createEthereumContract();
 
-  const retrieveGoal = async () => {};
+    try {
+      const txHash = await contract.createGoal(
+        currentUser?.id,
+        maxAmount,
+        deadline,
+        title,
+        description,
+        details,
+        picture
+      );
+      setIsLoading(true);
+      await txHash.wait();
+      setIsLoading(false);
+    } catch (err) {
+      console.error(parseErrorMessage(ContractActions.GOAL_CREATE, err));
+    }
+  };
 
-  const fundGoal = async () => {};
+  const retrieveGoal = async (goalId: number): Promise<Goal> => {
+    const contract = createEthereumContract();
+    let goalInfo = [];
 
-  const sendFunds = async () => {};
+    try {
+      goalInfo = await contract.retrieveGoal(goalId);
+    } catch (err) {
+      console.error(parseErrorMessage(ContractActions.GOAL_RETRIEVE, err));
+    }
+
+    let goal: Goal = parseResponseForGoal(goalInfo);
+    return goal;
+  };
+
+  const fundGoal = async (goalId: number) => {
+    const contract = createEthereumContract();
+
+    try {
+      const txHash = await contract.fundGoal(goalId);
+      setIsLoading(true);
+      await txHash.wait();
+      setIsLoading(false);
+    } catch (err) {
+      console.error(parseErrorMessage(ContractActions.GOAL_FUND, err));
+    }
+  };
+
+  const sendFunds = async (goalId: number) => {
+    const contract = createEthereumContract();
+
+    try {
+      const txHash = await contract.sendFunds(goalId);
+      setIsLoading(true);
+      await txHash.wait();
+      setIsLoading(false);
+    } catch (err) {
+      console.error(parseErrorMessage(ContractActions.GOAL_FUND, err));
+    }
+  };
 
   useEffect(() => {
     setEthereum(window.ethereum);
@@ -149,7 +217,18 @@ export const CrowdfundProvider = ({
     );
   }, [ethereum]);
 
-  const value = { connectWallet, currentUser, retrieveUser };
+  const value = {
+    connectWallet,
+    currentUser,
+    retrieveUser,
+    updateUser,
+    createGoal,
+    retrieveGoal,
+    fundGoal,
+    sendFunds,
+    isLoading,
+  };
+
   return (
     <CrowdfundContext.Provider value={value}>
       {children}

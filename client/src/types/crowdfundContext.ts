@@ -10,4 +10,6 @@ export interface CrowdfundContextType {
     fundGoal?: any;
 
     sendFunds?: any;
+
+    isLoading?: boolean;
 }

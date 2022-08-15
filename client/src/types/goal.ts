@@ -13,4 +13,5 @@ export interface Goal {
     funderAddresses?: string[];
 
     createdAt?: Date;
+    deadline?: Date;
 }
