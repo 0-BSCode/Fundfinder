@@ -2,20 +2,27 @@ import React, { useState, useEffect, ReactElement } from "react";
 import { contractAbi, contractAddress } from "src/constants/contractDetails";
 import { ethers } from "ethers";
 import { User } from "src/types/user";
+import parseResponseForUser from "src/utils/parseResponseForUser";
+import { CrowdfundContextType } from "src/types/crowdfundContext";
 
-export const CrowdfundContext = React.createContext({});
+export const CrowdfundContext = React.createContext<CrowdfundContextType>(
+  {} as CrowdfundContextType
+);
 
 export const CrowdfundProvider = ({
   children,
 }: {
   children: ReactElement;
 }): ReactElement => {
-  const [ethereum, setEthereum] = useState<object>({});
-  const [currentAccount, setCurrentAccount] = useState<string>("");
-  const [currentUser, setCurrentUser] = useState<User>();
+  const [ethereum, setEthereum] = useState<ethers.providers.ExternalProvider>();
+  const [currentAccount, setCurrentUser] = useState<User>();
 
   const createEthereumContract = () => {
-    const provider = new ethers.providers.Web3Provider(ethereum);
+    console.log("ETHEREUM CREATE");
+    console.log(ethereum);
+    const provider = new ethers.providers.Web3Provider(
+      ethereum ? ethereum : ({} as ethers.providers.ExternalProvider)
+    );
     const signer = provider.getSigner();
     const crowdfundContract = new ethers.Contract(
       contractAddress,
@@ -28,16 +35,19 @@ export const CrowdfundProvider = ({
 
   const checkForWalletConnection = async () => {
     try {
-      if (!ethereum) alert("Please install MetaMask!");
+      if (ethereum && ethereum?.request) {
+        const accounts = await ethereum.request({
+          method: "eth_requestAccounts",
+        });
 
-      const accounts = await ethereum.request({ method: "request_accounts" });
-
-      if (accounts.length) {
-        setCurrentAccount(accounts[0]);
-
-        retrieveUser(currentAccount);
+        console.log(typeof accounts[0]);
+        if (accounts.length) {
+          setCurrentUser(await retrieveAccount(accounts[0]));
+        } else {
+          console.log("No accounts found!");
+        }
       } else {
-        console.log("No accounts found!");
+        if (typeof ethereum === undefined) alert("Please install MetaMask!");
       }
     } catch (err) {
       console.log(err);
@@ -45,49 +55,115 @@ export const CrowdfundProvider = ({
   };
 
   const connectWallet = async () => {
-    try {
-      if (!ethereum) alert("Please install MetaMask!");
+    // * Doesn't retrieve user. Instead, it reloads page,
+    // * which lets checkForWalletConnection retrieve user
 
-      const accounts = await ethereum.request({ method: "request_accounts" });
-      setCurrentAccount(accounts[0]);
-      window.location.reload();
+    try {
+      if (ethereum && ethereum?.request) {
+        const accounts = await ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        setCurrentUser(await retrieveAccount(accounts[0]));
+      } else {
+        if (typeof ethereum === undefined) alert("Please install MetaMask!");
+        else alert("Smthg's wrong");
+      }
     } catch (err) {
       console.log(err);
     }
   };
 
-  const retrieveUser = async (accountId: string) => {
-    if (ethereum) {
-      const contract = createEthereumContract();
-      let user;
-      try {
-        user = await contract.retrieveAccount(accountId);
-      } catch (err) {
-        await contract.createAccount(accountId);
-        user = await contract.retrieveAccount(accountId);
-      }
+  const createAccount = async (accountId: string): Promise<boolean> => {
+    const contract = createEthereumContract();
+    let res = false;
+    try {
+      const txHash = await contract.createAccount(accountId);
+      await txHash.wait();
+      res = true;
+    } catch (err) {
+      console.log(err);
+    }
 
-      console.log("USER");
-      console.log(user);
-    } else {
-      console.log("No ethereum object found");
+    return res;
+  };
+
+  const updateAccount = async (
+    accountId: string,
+    username: string,
+    picture: string
+  ) => {
+    const contract = createEthereumContract();
+
+    try {
+      await contract.updateAccount(accountId, username, picture);
+      setCurrentUser(await retrieveAccount(accountId));
+    } catch (err) {
+      console.log(err);
     }
   };
 
-  useEffect(() => {
-    console.log(window.ethereum);
-    const initializeEthereum = async () => {
-      await setEthereum(window.ethereum);
-      checkForWalletConnection();
-    };
+  const retrieveUser = async (accountId: string): Promise<User> => {
+    let user: User = {};
+    if (typeof ethereum !== undefined) {
+      const contract = createEthereumContract();
+      let userInfo;
+      try {
+        userInfo = await contract.retrieveAccount(accountId);
+      } catch (err) {
+        try {
+          if (await createAccount(accountId)) {
+            userInfo = await contract.retrieveAccount(accountId);
+          } else {
+            throw new Error("User refused account creation.");
+          }
+        } catch (err) {
+          alert("User refused to create account. Refresh to try again.");
+        }
+      }
 
-    initializeEthereum();
+      user = parseResponseForUser(userInfo);
+    } else {
+      console.log("No ethereum object found");
+    }
+
+    return user;
+  };
+
+  const retrieveAccount = async (accountId: string): Promise<User> => {
+    const contract = createEthereumContract();
+    let userInfo = [];
+    try {
+      userInfo = await contract.retrieveAccount(accountId);
+    } catch (err) {
+      console.log("Error on account retrieval");
+      console.log(err);
+    }
+
+    let user: User = parseResponseForUser(userInfo);
+    return user;
+  };
+
+  const createGoal = async () => {};
+
+  useEffect(() => {
+    setEthereum(window.ethereum);
   }, []);
 
+  useEffect(() => {
+    checkForWalletConnection();
+    window?.ethereum?.on(
+      "accountsChanged",
+      async function (accounts: string[]) {
+        if (ethereum) {
+          setCurrentUser(await retrieveUser(accounts[0]));
+        }
+      }
+    );
+  }, [ethereum]);
+
+  const value = { connectWallet, currentAccount, retrieveAccount };
   return (
-    <CrowdfundContext.Provider
-      value={{ connectWallet, currentAccount, retrieveUser }}
-    >
+    <CrowdfundContext.Provider value={value}>
       {children}
     </CrowdfundContext.Provider>
   );
