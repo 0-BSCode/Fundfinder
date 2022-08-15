@@ -1,5 +1,13 @@
 export interface CrowdfundContextType {
+    connectWallet?: any;
+
     currentUser?: any;
     retrieveUser?: any;
-    connectWallet?: any;
+    updateUser?: any;
+
+    createGoal?: any;
+    retrieveGoal?: any;
+    fundGoal?: any;
+
+    sendFunds?: any;
 }
