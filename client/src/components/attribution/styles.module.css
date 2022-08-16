@@ -1,0 +1,16 @@
+.footer {
+    width: 100%;
+    text-align: center;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.footer__attribution {
+    font-size: 0.8rem;
+}
+
+.footer__attributionLink {
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+}

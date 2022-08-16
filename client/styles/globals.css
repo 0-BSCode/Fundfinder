@@ -12,6 +12,18 @@
 
 @font-face {
   font-family: 'Public Sans';
+  src: url("../public/assets/fonts/PublicSans/static/PublicSans-Medium.ttf");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Public Sans';
+  src: url("../public/assets/fonts/PublicSans/static/PublicSans-SemiBold.ttf");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'Public Sans';
   src: url("../public/assets/fonts/PublicSans/static/PublicSans-Bold.ttf");
   font-weight: 700;
 }
@@ -42,4 +54,22 @@
 
 body {
   height: 100%;
+}
+
+@media screen and (min-width: 480px) {
+  :root {
+    font-size: 23px;
+  }
+}
+
+@media screen and (min-width: 512px) {
+  :root {
+    font-size: 24px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  :root {
+    font-size: 36px;
+  }
 }

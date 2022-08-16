@@ -1,0 +1,12 @@
+.features {
+    margin-top: 2.3rem;
+    text-align: center;
+    color: white;
+    padding-inline: 1.5rem;
+}
+
+.features__title {
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin-bottom: 2.5rem;
+}

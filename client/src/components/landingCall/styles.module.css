@@ -1,0 +1,24 @@
+.call {
+    margin-top: 2rem;
+    margin-bottom: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 1.5rem;
+    color: white;
+}
+
+.call__title {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.call__btn {
+    background: linear-gradient(90deg, var(--color-lime-green), var(--color-bright-cyan));
+    padding: 0.9rem 1.2rem;
+    border-radius: 1.5rem;
+    border: none;
+    color: white;
+    letter-spacing: 0.08rem;
+    font-size: 0.9rem;
+}

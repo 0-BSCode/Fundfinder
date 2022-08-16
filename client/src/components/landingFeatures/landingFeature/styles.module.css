@@ -1,0 +1,21 @@
+.feature {
+    margin-bottom: 2.5rem;
+}
+
+.feature__logo {
+    width: 4.5rem;
+}
+
+.feature__title {
+    margin-top: 0.8rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.feature__description {
+    margin-top: 0.5rem;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 300;
+    line-height: 1.1rem;
+}

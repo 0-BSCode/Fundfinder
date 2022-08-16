@@ -2,6 +2,9 @@
     padding-top: 5rem;
     padding-inline: 1.5rem;
     background-image: url("../../../public/assets/images/bg-intro-mobile.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: right;
     color: white;
     text-align: center;
 }
@@ -14,6 +17,7 @@
 
 .hero__description {
     margin-top: 1.6rem;
+    margin-bottom: 2rem;
     font-size: 0.9rem;
     line-height: 1.4rem;
     width: 90%;

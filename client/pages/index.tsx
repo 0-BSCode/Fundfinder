@@ -7,6 +7,9 @@ import Navbar from "src/components/navbar";
 import styles from "styles/Home.module.css";
 import { consumers } from "stream";
 import LandingHero from "src/components/landingHero";
+import LandingFeatures from "src/components/landingFeatures";
+import LandingCall from "src/components/landingCall";
+import Attribution from "src/components/attribution";
 
 const Home: NextPage = () => {
   const { connectWallet, currentUser } = useContext(CrowdfundContext);
@@ -38,6 +41,9 @@ const Home: NextPage = () => {
         ) : (
           <>
             <LandingHero />
+            <LandingFeatures />
+            <LandingCall />
+            <Attribution />
           </>
         )}
       </main>
