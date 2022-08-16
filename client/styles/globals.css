@@ -56,6 +56,17 @@ body {
   height: 100%;
 }
 
+button,
+a {
+  transform: all 0.2s;
+}
+
+button:hover,
+a:hover {
+  cursor: pointer;  
+  opacity: 0.7;
+}
+
 @media screen and (min-width: 480px) {
   :root {
     font-size: 23px;
@@ -71,5 +82,23 @@ body {
 @media screen and (min-width: 768px) {
   :root {
     font-size: 36px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  :root {
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  :root {
+    font-size: 21px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  :root {
+    font-size: 25.5px;
   }
 }

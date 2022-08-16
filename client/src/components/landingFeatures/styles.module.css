@@ -10,3 +10,22 @@
     font-size: 1.5rem;
     margin-bottom: 2.5rem;
 }
+
+@media screen and (min-width: 1024px) {
+    .features {
+        padding-inline: 6rem;
+    }
+
+    .features__title {
+        font-size: 1.8rem;
+    }
+
+    .features__container {
+        display: flex;
+        column-gap: 1.3rem;
+    }
+
+    .features > div {
+        width: 100% !important;
+    }
+}

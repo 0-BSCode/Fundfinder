@@ -22,3 +22,20 @@
     letter-spacing: 0.08rem;
     font-size: 0.9rem;
 }
+
+@media screen and (min-width: 1024px) {
+    .call {
+        padding-inline: 6rem;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .call__title {
+        font-size: 1.5rem;
+    }
+
+    .call__btn {
+        padding: 1rem 4rem;
+        font-size: 1.1rem;
+    }
+}

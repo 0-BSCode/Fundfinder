@@ -34,3 +34,26 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+@media screen and (min-width: 1024px) {
+    .nav {
+        padding: 1.3rem 6rem;
+    }
+
+    .nav__logo {
+        width: 10rem;
+    }
+
+    .nav__btn {
+        font-size: 1rem;
+    }
+    
+    .nav__profile {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .nav__profilePic {
+        width: 2.6rem;
+    }
+}
