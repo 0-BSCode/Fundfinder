@@ -1,0 +1,21 @@
+.hero {
+    padding-top: 5rem;
+    padding-inline: 1.5rem;
+    background-image: url("../../../public/assets/images/bg-intro-mobile.svg");
+    color: white;
+    text-align: center;
+}
+
+.hero__title {
+    font-weight: 400;
+    font-size: 2.4rem;
+
+}
+
+.hero__description {
+    margin-top: 1.6rem;
+    font-size: 0.9rem;
+    line-height: 1.4rem;
+    width: 90%;
+    margin-inline: auto;
+}

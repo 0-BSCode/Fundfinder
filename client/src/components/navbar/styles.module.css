@@ -1,0 +1,19 @@
+.nav {
+    background-color: white;
+    padding: 1.3rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav__logo {
+    width: 8rem;
+}
+
+.nav__btn {
+    border: none;
+    background: none;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-lime-green);
+}

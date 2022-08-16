@@ -22,6 +22,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  letter-spacing: 0.05rem;
 }
 
 :root {
@@ -37,4 +38,8 @@
   --color-light-gray-blue: hsl(220, 16%, 96%);
   --color-light-gray: hsl(0, 0%, 98%);
   --color-white: hsl(0, 0%, 100%);
+}
+
+body {
+  height: 100%;
 }
