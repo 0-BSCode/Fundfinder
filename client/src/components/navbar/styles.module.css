@@ -17,3 +17,20 @@
     font-weight: 700;
     color: var(--color-lime-green);
 }
+
+.nav__profile {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: none;
+    background-color: var(--color-dark-blue);
+    border-radius: 50%;
+    position: relative;
+}
+
+.nav__profilePic {
+    width: 2.3rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
