@@ -44,7 +44,7 @@ export const CrowdfundProvider = ({
         });
 
         if (accounts.length) {
-          retrieveUser(accounts[0]);
+          retrieveCurrentUser(accounts[0]);
         } else {
           console.log("No accounts found!");
         }
@@ -124,13 +124,65 @@ export const CrowdfundProvider = ({
     const contract = createEthereumContract();
     let userInfo = [];
     try {
+      console.log("RETRIEVING ACCOUNT");
       userInfo = await contract.retrieveAccount(accountId);
+      console.log("ACCOUNT retrieved");
     } catch (err) {
       console.error(parseErrorMessage(ContractActions.ACCOUNT_RETRIEVE, err));
     }
 
     let user: User = parseResponseForUser(userInfo);
     return user;
+  };
+
+  const retrieveUserGoals = async (accountId: string): Promise<Goal[]> => {
+    const contract = createEthereumContract();
+    let goals: Goal[] = [];
+
+    try {
+      let goalsCountRes = await contract
+        .retrieveGoalsCount(accountId)
+        .toString();
+      let goalsCount = parseInt(goalsCountRes);
+
+      for (let i = 0; i < goalsCount; i++) {
+        let goalIdRes = await contract.retrieveGoalByIndex(accountId, i);
+        let goalId = parseInt(goalIdRes.toString());
+
+        let goal: Goal = await retrieveGoal(goalId);
+        goals.push(goal);
+      }
+    } catch (err) {
+      console.error(parseErrorMessage(ContractActions.ACCOUNT_GOALS, err));
+    }
+
+    return goals;
+  };
+
+  const retrieveUserGoalsHelped = async (
+    accountId: string
+  ): Promise<Goal[]> => {
+    const contract = createEthereumContract();
+    let goals: Goal[] = [];
+
+    try {
+      let goalsCountRes = await contract
+        .retrieveGoalsHelpedCount(accountId)
+        .toString();
+      let goalsCount = parseInt(goalsCountRes);
+
+      for (let i = 0; i < goalsCount; i++) {
+        let goalIdRes = await contract.retrieveGoalHelpedByIndex(accountId, i);
+        let goalId = parseInt(goalIdRes.toString());
+
+        let goal: Goal = await retrieveGoal(goalId);
+        goals.push(goal);
+      }
+    } catch (err) {
+      console.error(parseErrorMessage(ContractActions.ACCOUNT_GOALS, err));
+    }
+
+    return goals;
   };
 
   const createGoal = async (
@@ -188,6 +240,29 @@ export const CrowdfundProvider = ({
     }
   };
 
+  const retrieveGoalFunders = async (goalId: number): Promise<User[]> => {
+    const contract = createEthereumContract();
+    let users: User[] = [];
+
+    try {
+      let fundersCountRes = await contract
+        .retrieveFunderAddressesCount(goalId)
+        .toString();
+      let fundersCount = parseInt(fundersCountRes);
+
+      for (let i = 0; i < fundersCount; i++) {
+        let accountId = await contract.retrieveFunderAddressByIndex(goalId, i);
+
+        let user: User = await retrieveUser(accountId);
+        users.push(user);
+      }
+    } catch (err) {
+      console.error(parseErrorMessage(ContractActions.GOAL_FUNDERS, err));
+    }
+
+    return users;
+  };
+
   const sendFunds = async (goalId: number) => {
     const contract = createEthereumContract();
 
@@ -222,9 +297,12 @@ export const CrowdfundProvider = ({
     currentUser,
     retrieveUser,
     updateUser,
+    retrieveUserGoals,
+    retrieveUserGoalsHelped,
     createGoal,
     retrieveGoal,
     fundGoal,
+    retrieveGoalFunders,
     sendFunds,
     isLoading,
   };
