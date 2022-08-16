@@ -9,7 +9,15 @@ const Navbar = (): ReactElement => {
   return (
     <nav className={styles.nav}>
       <img className={styles.nav__logo} src={logo.src} alt={"Fundfinder"} />
-      <button className={styles.nav__btn}>Get started</button>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          connectWallet();
+        }}
+        className={styles.nav__btn}
+      >
+        Get started
+      </button>
     </nav>
   );
 };
