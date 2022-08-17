@@ -4,12 +4,9 @@ import { CrowdfundContext } from "src/context/CrowdfundContext";
 import { MediaContext } from "src/context/MediaContext";
 import Head from "next/head";
 import Navbar from "src/components/navbar";
-import styles from "styles/Home.module.css";
-import { consumers } from "stream";
-import LandingHero from "src/components/landingHero";
-import LandingFeatures from "src/components/landingFeatures";
-import LandingCall from "src/components/landingCall";
 import Attribution from "src/components/attribution";
+import Landing from "src/components/landing";
+import { ColorScheme } from "src/enums/colorScheme";
 
 const Home: NextPage = () => {
   const { connectWallet, currentUser } = useContext(CrowdfundContext);
@@ -18,11 +15,21 @@ const Home: NextPage = () => {
   useEffect(() => {
     console.log(`Device width: ${deviceWidth}`);
 
-    if (document && document.body) {
+    if (document) {
+      const root = document.querySelector(":root") as HTMLElement;
+      const rootStyle = root.style;
       if (currentUser?.id) {
-        document.body.style.backgroundColor = "hsl(0, 0%, 98%)";
+        rootStyle.setProperty("--main-bg-color", ColorScheme.LIGHT_GRAY);
+        rootStyle.setProperty(
+          "--attribution-font-color",
+          ColorScheme.DARK_BLUE
+        );
       } else {
-        document.body.style.backgroundColor = "hsl(233, 26%, 24%)";
+        rootStyle.setProperty("--main-bg-color", ColorScheme.DARK_BLUE);
+        rootStyle.setProperty(
+          "--attribution-font-color",
+          ColorScheme.LIGHT_GRAY
+        );
       }
     }
   }, [currentUser]);
@@ -35,17 +42,9 @@ const Home: NextPage = () => {
         <link rel="icon" href="/icon-online.svg" />
       </Head>
       <Navbar />
-      <main className={styles.home}>
-        {currentUser && currentUser.id ? (
-          <></>
-        ) : (
-          <>
-            <LandingHero />
-            <LandingFeatures />
-            <LandingCall />
-            <Attribution />
-          </>
-        )}
+      <main>
+        {currentUser && currentUser.id ? <>HI</> : <Landing />}
+        <Attribution />
       </main>
     </>
   );

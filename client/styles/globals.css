@@ -50,10 +50,15 @@
   --color-light-gray-blue: hsl(220, 16%, 96%);
   --color-light-gray: hsl(0, 0%, 98%);
   --color-white: hsl(0, 0%, 100%);
+
+  /* Theming */
+  --attribution-font-color: white;
+  --main-bg-color: var(--color-dark-blue);
 }
 
 body {
-  height: 100%;
+  height: fit-content;
+  background-color: var(--main-bg-color);
 }
 
 button,

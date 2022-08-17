@@ -3,8 +3,8 @@ import paymentLogo from "public/assets/images/icon-api.svg";
 import goalLogo from "public/assets/images/icon-budgeting.svg";
 import networkingLogo from "public/assets/images/icon-onboarding.svg";
 import styles from "./styles.module.css";
-import LandingDivider from "../landingDivider";
-import LandingFeature from "./landingFeature";
+import LandingDivider from "../Divider";
+import LandingFeature from "./Feature";
 
 const LandingFeatures = (): ReactElement => {
   return (

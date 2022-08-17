@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import LandingDivider from "../landingDivider";
+import LandingDivider from "../Divider";
 import styles from "./styles.module.css";
 
 const LandingHero = (): ReactElement => {
