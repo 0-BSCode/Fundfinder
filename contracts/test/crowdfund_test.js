@@ -104,7 +104,7 @@ contract("Crowdfund", (accounts) => {
     await contract.createGoal(
       accounts[0],
       web3.utils.toWei("3", "ether"),
-      timeInSeconds + 1,
+      timeInSeconds + 4,
       "EasyBank Food Drive",
       "It’s time for EasyBank’s annual food drive, a program that aims to provide stable source of food for local communities in need.",
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque placerat rhoncus odio et fermentum. Aliquam egestas, nulla nec ultrices pharetra, erat quam convallis sem, non ultricies libero turpis eu nisi. Nullam sed rutrum urna, eget porttitor felis. Phasellus feugiat diam nec ullamcorper pharetra. Curabitur metus velit, suscipit vitae metus a, blandit iaculis enim. Pellentesque eu arcu posuere, volutpat tellus in, porta erat. Nulla facilisi. Phasellus venenatis mauris at neque porta tincidunt. Etiam pretium id felis et maximus. Donec posuere in felis et tempor. Nulla facilisi.",
@@ -119,9 +119,11 @@ contract("Crowdfund", (accounts) => {
     let account1OldBalance = await web3.eth.getBalance(accounts[1]);
     let account2OldBalance = await web3.eth.getBalance(accounts[2]);
 
-    await new Promise((r) => setTimeout(r, 6000));
+    await new Promise((r) => setTimeout(r, 5000));
 
-    await contract.refundFunders(goalId);
+    const currTime = new Date().getTime();
+    const currTimeInSeconds = Math.floor(currTime / 1000);
+    await contract.refundFunders(goalId, currTimeInSeconds);
 
     let account1NewBalance = await web3.eth.getBalance(accounts[1]);
     let account2NewBalance = await web3.eth.getBalance(accounts[2]);

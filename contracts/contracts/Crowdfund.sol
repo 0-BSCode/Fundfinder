@@ -68,6 +68,14 @@ contract Crowdfund {
         _;
     }
 
+    modifier deadlineIsReached(uint256 _goalId, uint256 _time) {
+        require(
+            _time >= goals[_goalId].deadline,
+            "Deadline hasn't been reached yet"
+        );
+        _;
+    }
+
     function createAccount(address _owner) external {
         require(accounts[_owner].exists == false, "Account already exists");
         User memory newUser;
@@ -271,11 +279,13 @@ contract Crowdfund {
         emit goalCompleted(_goalId);
     }
 
-    function refundFunders(uint256 _goalId) public payable {
+    function refundFunders(uint256 _goalId, uint256 _time)
+        public
+        payable
+        deadlineIsReached(_goalId, _time)
+    {
         require(
-            isDeadlineReached(_goalId) &&
-                !isFundCompleted(_goalId) &&
-                msg.sender == goals[_goalId].owner,
+            !isFundCompleted(_goalId) && msg.sender == goals[_goalId].owner,
             "Deadline hasn't been reached yet"
         );
         address[] memory funderAddresses = goals[_goalId].funderAddresses;
@@ -295,14 +305,6 @@ contract Crowdfund {
         accounts[goals[_goalId].owner].activeGoalCount = accounts[
             goals[_goalId].owner
         ].activeGoalCount.sub(1);
-    }
-
-    function isDeadlineReached(uint256 _goalId) private view returns (bool) {
-        bool res = false;
-        if (block.timestamp >= goals[_goalId].deadline) {
-            res = true;
-        }
-        return res;
     }
 
     function isFundCompleted(uint256 _goalId) private view returns (bool) {
