@@ -306,8 +306,10 @@ export const CrowdfundProvider = ({
     const contract = createEthereumContract();
 
     try {
+      const time = new Date().getTime();
+      const timeSeconds = Math.floor(time / 1000);
       console.log("TRYING REFUND");
-      const txHash = await contract.refundFunders(goalId);
+      const txHash = await contract.refundFunders(goalId, timeSeconds);
 
       console.log("REFUND CONFIRMED");
       setIsLoading(true);

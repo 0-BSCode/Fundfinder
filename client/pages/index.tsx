@@ -29,6 +29,7 @@ const Home: NextPage = () => {
 
     checkForDeadline(goals);
   }, [goals]);
+
   return (
     <>
       <main>
