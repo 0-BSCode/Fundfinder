@@ -7,6 +7,7 @@ import { CrowdfundContextType } from "src/types/crowdfundContext";
 import { ContractActions } from "src/enums/contractActions";
 import parseErrorMessage from "src/utils/parseErrorMessage";
 import { Goal } from "src/types/goal";
+import { ColorScheme } from "src/enums/colorScheme";
 import parseResponseForGoal from "src/utils/parseResponseForGoal";
 
 export const CrowdfundContext = React.createContext<CrowdfundContextType>(
@@ -20,6 +21,7 @@ export const CrowdfundProvider = ({
 }): ReactElement => {
   const [ethereum, setEthereum] = useState<ethers.providers.ExternalProvider>();
   const [currentUser, setCurrentUser] = useState<User>();
+  const [goals, setGoals] = useState<Goal[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const createEthereumContract = () => {
@@ -38,7 +40,7 @@ export const CrowdfundProvider = ({
 
   const checkForWalletConnection = async () => {
     try {
-      if (ethereum && ethereum?.request) {
+      if (ethereum && ethereum?.request && !currentUser) {
         const accounts = await ethereum.request({
           method: "eth_requestAccounts",
         });
@@ -112,8 +114,6 @@ export const CrowdfundProvider = ({
         await createUser(accountId);
         user = await retrieveUser(accountId);
       }
-      console.log("USER");
-      console.log(user);
       setCurrentUser(user);
     } else {
       console.error("No ethereum object found");
@@ -124,9 +124,7 @@ export const CrowdfundProvider = ({
     const contract = createEthereumContract();
     let userInfo = [];
     try {
-      console.log("RETRIEVING ACCOUNT");
       userInfo = await contract.retrieveAccount(accountId);
-      console.log("ACCOUNT retrieved");
     } catch (err) {
       console.error(parseErrorMessage(ContractActions.ACCOUNT_RETRIEVE, err));
     }
@@ -190,16 +188,19 @@ export const CrowdfundProvider = ({
     description: string,
     details: string,
     picture: string,
-    maxAmount: number,
+    maxAmount: string,
     deadline: number
   ) => {
     let contract = createEthereumContract();
 
     try {
+      const currTime = new Date().getTime();
+      const currTimeSeconds = Math.floor(currTime / 1000);
+      const amount = ethers.utils.parseEther(maxAmount);
       const txHash = await contract.createGoal(
         currentUser?.id,
-        maxAmount,
-        deadline,
+        amount,
+        currTimeSeconds + 100,
         title,
         description,
         details,
@@ -227,11 +228,18 @@ export const CrowdfundProvider = ({
     return goal;
   };
 
-  const fundGoal = async (goalId: number) => {
+  const fundGoal = async (goalId: number, amount: string) => {
     const contract = createEthereumContract();
 
     try {
-      const txHash = await contract.fundGoal(goalId);
+      const amt = ethers.utils.parseEther(amount);
+      const txHash = await contract.fundGoal(goalId, {
+        from: currentUser?.id,
+        value: amt,
+      });
+
+      console.log("HASH");
+      console.log(txHash);
       setIsLoading(true);
       await txHash.wait();
       setIsLoading(false);
@@ -263,16 +271,50 @@ export const CrowdfundProvider = ({
     return users;
   };
 
-  const sendFunds = async (goalId: number) => {
+  const retrieveAllGoalsCount = async (): Promise<number> => {
+    const contract = createEthereumContract();
+    let goalsCount: number = -1;
+    try {
+      let goalsCountRes = await contract.goalNumber();
+      goalsCount = parseInt(goalsCountRes.toString());
+    } catch (err) {
+      parseErrorMessage(ContractActions.GOAL_COUNT, err);
+    }
+
+    return goalsCount;
+  };
+
+  const retrieveAllGoals = async (): Promise<Goal[]> => {
+    const goals: Goal[] = [];
+
+    try {
+      const goalsCount = await retrieveAllGoalsCount();
+      for (let i = 0; i < goalsCount; i++) {
+        const goal = await retrieveGoal(i);
+        console.log("GOAL");
+        console.log(goal);
+        goals.push(goal);
+      }
+    } catch (err) {
+      parseErrorMessage(ContractActions.GOAL_RETRIEVE, err);
+    }
+
+    return goals;
+  };
+
+  const refundAllFunders = async (goalId: number) => {
     const contract = createEthereumContract();
 
     try {
-      const txHash = await contract.sendFunds(goalId);
+      console.log("TRYING REFUND");
+      const txHash = await contract.refundFunders(goalId);
+
+      console.log("REFUND CONFIRMED");
       setIsLoading(true);
       await txHash.wait();
       setIsLoading(false);
     } catch (err) {
-      console.error(parseErrorMessage(ContractActions.GOAL_FUND, err));
+      console.error(parseErrorMessage(ContractActions.ACCOUNT_REFUND, err));
     }
   };
 
@@ -282,6 +324,7 @@ export const CrowdfundProvider = ({
 
   useEffect(() => {
     checkForWalletConnection();
+
     window?.ethereum?.on(
       "accountsChanged",
       async function (accounts: string[]) {
@@ -290,7 +333,35 @@ export const CrowdfundProvider = ({
         }
       }
     );
-  }, [ethereum]);
+  });
+
+  useEffect(() => {
+    if (document) {
+      const root = document.querySelector(":root") as HTMLElement;
+      const rootStyle = root.style;
+      if (currentUser?.id) {
+        rootStyle.setProperty("--main-bg-color", ColorScheme.LIGHT_GRAY);
+        rootStyle.setProperty(
+          "--attribution-font-color",
+          ColorScheme.DARK_BLUE
+        );
+      } else {
+        rootStyle.setProperty("--main-bg-color", ColorScheme.DARK_BLUE);
+        rootStyle.setProperty(
+          "--attribution-font-color",
+          ColorScheme.LIGHT_GRAY
+        );
+      }
+    }
+
+    const getAllGoals = async () => {
+      if (currentUser) {
+        setGoals(await retrieveAllGoals());
+      }
+    };
+
+    getAllGoals();
+  }, [ethereum, currentUser]);
 
   const value = {
     connectWallet,
@@ -299,11 +370,12 @@ export const CrowdfundProvider = ({
     updateUser,
     retrieveUserGoals,
     retrieveUserGoalsHelped,
+    goals,
     createGoal,
     retrieveGoal,
     fundGoal,
     retrieveGoalFunders,
-    sendFunds,
+    refundAllFunders,
     isLoading,
   };
 

@@ -7,12 +7,13 @@ export interface CrowdfundContextType {
     retrieveUserGoals?: any;
     retrieveUserGoalsHelped?: any;
 
+    goals?: any;
     createGoal?: any;
     retrieveGoal?: any;
     fundGoal?: any;
     retrieveGoalFunders?: any;
 
-    sendFunds?: any;
+    refundAllFunders?: any;
 
     isLoading?: boolean;
 }

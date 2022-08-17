@@ -1,0 +1,10 @@
+.setGoal {
+    background-color: var(--color-lime-green);
+    border: none;
+    border-radius: 5rem;
+    padding: 1rem 0;
+    text-transform: uppercase;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+}
