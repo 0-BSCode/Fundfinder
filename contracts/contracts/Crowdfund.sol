@@ -46,7 +46,7 @@ contract Crowdfund {
     mapping(uint256 => Goal) goals;
     mapping(uint256 => mapping(address => uint256)) goalFunders;
 
-    uint256 goalNumber = 0;
+    uint256 public goalNumber = 0;
 
     modifier accountExists(address _owner) {
         require(accounts[_owner].exists == true, "Account doesn't exist");
@@ -284,6 +284,8 @@ contract Crowdfund {
             address payable _account = payable(funderAddresses[i]);
             _account.transfer(goalFunders[_goalId][funderAddresses[i]]);
         }
+
+        deactivateGoal(_goalId);
 
         emit refundSent(_goalId);
     }
