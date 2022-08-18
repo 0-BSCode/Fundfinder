@@ -11,9 +11,6 @@ contract Crowdfund {
     event goalCompleted(uint256 indexed _goalId);
     event goalCreated(uint256 indexed _goalId);
     event refundSent(uint256 indexed _goalId);
-    event debugMessage(string _message);
-    event debugValue(string _description, uint256 _value);
-    event debugBool(string _description, bool _bool);
 
     struct Goal {
         uint256 id;
@@ -286,7 +283,7 @@ contract Crowdfund {
     {
         require(
             !isFundCompleted(_goalId) && msg.sender == goals[_goalId].owner,
-            "Deadline hasn't been reached yet"
+            "Fund is already complete or message sender isn't goal owner"
         );
         address[] memory funderAddresses = goals[_goalId].funderAddresses;
         uint256 fundersCount = goals[_goalId].funderAddresses.length;
