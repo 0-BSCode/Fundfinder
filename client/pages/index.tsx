@@ -4,6 +4,7 @@ import { CrowdfundContext } from "src/context/CrowdfundContext";
 import Landing from "src/components/landing";
 import HomeComponent from "src/components/home";
 import { Goal } from "src/types/goal";
+import GoalCard from "src/components/goal/Card";
 
 const Home: NextPage = () => {
   const { currentUser, goals, fundGoal, refundAllFunders } =
@@ -15,6 +16,7 @@ const Home: NextPage = () => {
       goalList?.forEach(async (goal: Goal) => {
         console.log(`ID: ${goal.id}`);
         console.log(`DEADLINE PASSED: `, new Date() > goal.deadline);
+        console.log(`Date: ${new Date()}`);
         console.log(`IS ACTIVE: ${goal.isActive}`);
 
         if (goal.deadline) {
@@ -33,39 +35,15 @@ const Home: NextPage = () => {
   return (
     <>
       <main>
-        {currentUser && currentUser.id ? (
-          <>
-            <HomeComponent />
-            {goals &&
-              goals
-                .filter((goal: Goal) => goal.isActive)
-                .map((goal: Goal) => (
-                  <div key={goal.id}>
-                    <h3>{goal.title}</h3>
-                    <h6>{goal.description}</h6>
-                    <p>{goal.details}</p>
-                    <p>{goal.owner}</p>
-                    <p>{goal.currentAmount}</p>
-                    <p>{goal.maxAmount}</p>
-                    <p>{goal.createdAt?.toString()}</p>
-                    <p>{goal.deadline?.toString()}</p>
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        fundGoal(goal.id, "2");
-                      }}
-                    >
-                      DONATE
-                    </button>
-                  </div>
-                ))}
-          </>
-        ) : (
-          <Landing />
-        )}
+        {currentUser && currentUser.id ? <HomeComponent /> : <Landing />}
       </main>
     </>
   );
 };
 
 export default Home;
+
+/*
+- Check refund functionality
+- Refresh goals whenever one is updated
+*/
