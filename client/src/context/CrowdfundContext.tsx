@@ -194,13 +194,11 @@ export const CrowdfundProvider = ({
     let contract = createEthereumContract();
 
     try {
-      const currTime = new Date().getTime();
-      const currTimeSeconds = Math.floor(currTime / 1000);
       const amount = ethers.utils.parseEther(maxAmount);
       const txHash = await contract.createGoal(
         currentUser?.id,
         amount,
-        currTimeSeconds + 100,
+        deadline,
         title,
         description,
         details,

@@ -1,8 +1,8 @@
 import React, { ReactElement, useContext, useState, useEffect } from "react";
 import { CrowdfundContext } from "src/context/CrowdfundContext";
 import defaultPic from "public/assets/images/image-plane.png";
-import { Goal } from "src/types/goal";
 import parseTextForDateTime from "src/utils/parseTextForDateTime";
+import styles from "./styles.module.css";
 
 const GoalsCreate = (): ReactElement => {
   const { createGoal, goals } = useContext(CrowdfundContext);
@@ -32,23 +32,35 @@ const GoalsCreate = (): ReactElement => {
     console.log("GOALS");
     console.log(goals);
   });
+
   return (
-    <section>
-      <h3>Set A Goal</h3>
-      <div>
-        <img src={defaultPic.src} alt={"Placeholder picture"} />
-        <form>
-          <label htmlFor={"title"}>Title</label>
+    <main className={styles.create}>
+      <h3 className={styles.create__title}>Set A Goal</h3>
+      <div className={styles.create__wrapper}>
+        <div className={styles.create__imgContainer}>
+          <img
+            className={styles.create__img}
+            src={defaultPic.src}
+            alt={"Placeholder picture"}
+          />
+        </div>
+        <form className={styles.create__form}>
+          <label className={styles.create__label} htmlFor={"title"}>
+            Title
+          </label>
           <input
+            className={styles.create__input}
             type={"text"}
             placeholder={"What’s your goal?"}
             id={"title"}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-
-          <label htmlFor={"description"}>Description</label>
+          <label className={styles.create__label} htmlFor={"description"}>
+            Description
+          </label>
           <input
+            className={styles.create__input}
             type={"text"}
             placeholder={"Describe what your goal is and why you need funding"}
             id={"description"}
@@ -56,19 +68,23 @@ const GoalsCreate = (): ReactElement => {
             onChange={(e) => setDescription(e.target.value)}
           />
 
-          <label htmlFor={"details"}>Details</label>
-          <input
-            type={"text"}
+          <label className={styles.create__label} htmlFor={"details"}>
+            Details
+          </label>
+          <textarea
+            id={"details"}
+            className={`${styles.create__input} ${styles.create__textarea}`}
             placeholder={
               "Provide details for people to see when they view your goal"
             }
-            id={"details"}
             value={details}
             onChange={(e) => setDetails(e.target.value)}
           />
-
-          <label htmlFor={"amount"}>Amount</label>
+          <label className={styles.create__label} htmlFor={"amount"}>
+            Amount
+          </label>
           <input
+            className={styles.create__input}
             type={"text"}
             placeholder={"How much do you need (in ether)?"}
             id={"amount"}
@@ -76,21 +92,24 @@ const GoalsCreate = (): ReactElement => {
             onChange={(e) => setAmount(e.target.value)}
           />
 
-          <label htmlFor={"deadline"}>Deadline</label>
+          <label className={styles.create__label} htmlFor={"deadline"}>
+            Deadline
+          </label>
           <input
+            className={styles.create__input}
             type={"text"}
-            placeholder={
-              "By when do you need these funds? Use the format mm/dd/yyyy"
-            }
+            placeholder={"By when do you need these funds (mm/dd/yyyy)?"}
             id={"deadline"}
             value={deadline}
             onChange={(e) => setDeadline(e.target.value)}
           />
 
-          <button onClick={submitGoal}>Set</button>
+          <button className={styles.create__submit} onClick={submitGoal}>
+            Set
+          </button>
         </form>
       </div>
-    </section>
+    </main>
   );
 };
 

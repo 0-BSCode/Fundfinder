@@ -18,7 +18,7 @@
 .card__imgContainer {
     border-top-right-radius: inherit;
     border-top-left-radius: inherit;
-    aspect-ratio: 2.5/1;
+    aspect-ratio: 2/1;
     overflow: hidden;
 }
 
@@ -27,7 +27,7 @@
 }
 
 .card__content {
-    padding: 0.8rem;
+    padding: 1rem;
 }
 
 .card__heading {
@@ -43,9 +43,12 @@
 
 .card__title {
     font-size: 1.2rem;
+    flex: 2;
 }
 
 .card__amount {
+    text-align: right;
+    flex: 1;
     font-size: 1.1rem;
     color: var(--color-lime-green);
 }
@@ -54,6 +57,7 @@
     font-size: 0.65rem;
     color: var(--color-gray);
     margin-top: 0.5rem;
+    line-height: 1rem;
 }
 
 .card__progress {

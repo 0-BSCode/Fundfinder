@@ -5,6 +5,7 @@ import { Goal } from "src/types/goal";
 import styles from "./styles.module.css";
 import parseWeiToText from "src/utils/parseWeiToText";
 import Link from "next/link";
+import GoalProgress from "../Progress";
 
 const GoalCard = ({ goal }: { goal: Goal }): ReactElement => {
   return (
@@ -25,7 +26,11 @@ const GoalCard = ({ goal }: { goal: Goal }): ReactElement => {
             </p>
           </div>
           <p className={styles.card__description}>{goal.description}</p>
-          <span className={styles.card__progress} />
+          <GoalProgress
+            id={goal.id}
+            maxAmount={goal.maxAmount}
+            currAmount={goal.currentAmount}
+          />{" "}
         </div>
       </div>
     </Link>

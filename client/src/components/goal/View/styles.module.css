@@ -13,7 +13,7 @@
 }
 
 .goal__title {
-    font-size: 1.7rem;
+    font-size: 1.6rem;
 }
 
 .goal__heading {
@@ -35,15 +35,15 @@
 
 .goal__description {
     margin-top: 0.8rem;
-    font-size: 0.8rem;
+    font-size: 0.6rem;
     font-weight: 300;
 }
 
 .goal__details {
     margin-top: 1.5rem;
     text-align: left;
-    font-size: 1rem;
-    line-height: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.3rem;
 }
 
 .goal__divider {
