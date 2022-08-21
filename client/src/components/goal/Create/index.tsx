@@ -3,8 +3,10 @@ import { CrowdfundContext } from "src/context/CrowdfundContext";
 import defaultPic from "public/assets/images/image-plane.png";
 import parseTextForDateTime from "src/utils/parseTextForDateTime";
 import styles from "./styles.module.css";
+import { useRouter } from "next/router";
 
 const GoalsCreate = (): ReactElement => {
+  const router = useRouter();
   const { createGoal, goals } = useContext(CrowdfundContext);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -16,22 +18,9 @@ const GoalsCreate = (): ReactElement => {
     e.preventDefault();
     const goalDate = parseTextForDateTime(deadline);
 
-    console.log("Form Data");
-    console.log(`Title: ${title}`);
-    console.log(`Description: ${description}`);
-    console.log(`Details: ${details}`);
-    console.log(`Amount: ${amount}`);
-    console.log(`Deadline: ${goalDate}`);
-
-    console.log("CREATING");
     await createGoal(title, description, details, "", amount, goalDate);
-    console.log("GOAL CREATED");
+    // router.push(`goals/${goals.length}`);
   };
-
-  useEffect(() => {
-    console.log("GOALS");
-    console.log(goals);
-  });
 
   return (
     <main className={styles.create}>
@@ -62,7 +51,7 @@ const GoalsCreate = (): ReactElement => {
           <input
             className={styles.create__input}
             type={"text"}
-            placeholder={"Describe what your goal is and why you need funding"}
+            placeholder={"Describe what your goal is and why you need funds"}
             id={"description"}
             value={description}
             onChange={(e) => setDescription(e.target.value)}

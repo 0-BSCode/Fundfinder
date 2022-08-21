@@ -1,15 +1,18 @@
 import React, { ReactElement, useEffect } from "react";
 import styles from "./styles.module.css";
 import { ColorScheme } from "src/enums/colorScheme";
+import getTextFromDate from "src/utils/getTextFromDate";
 
 const GoalProgress = ({
   id,
   maxAmount,
   currAmount,
+  deadline,
 }: {
   id: number;
   maxAmount: number;
   currAmount: number;
+  deadline: Date;
 }): ReactElement => {
   useEffect(() => {
     const slider = document.querySelector(
@@ -27,8 +30,8 @@ const GoalProgress = ({
   }, [currAmount]);
 
   return (
-    <div className={styles.goal__progress}>
-      <p className={styles.goal__percent}>{`${Math.floor(
+    <div className={styles.progress}>
+      <p className={styles.progress__percent}>{`${Math.floor(
         (currAmount / maxAmount) * 100
       )}% complete `}</p>
       <input
@@ -37,8 +40,9 @@ const GoalProgress = ({
         min={0}
         max={maxAmount}
         value={currAmount}
-        className={styles.goal__progressBar}
+        className={styles.progress__bar}
       />
+      <p className={styles.progress__deadline}>{getTextFromDate(deadline)}</p>
     </div>
   );
 };

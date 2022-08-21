@@ -19,16 +19,23 @@ const GoalFundModal = ({
       `.${styles.fund}`
     ) as HTMLDialogElement;
 
-    console.log("DIALOG");
-    console.log(dialog);
-
     try {
       if (isOpen) dialog?.showModal();
       else dialog?.close();
     } catch (e) {
       dialog?.close();
+      setIsOpen(false);
     }
   }, [isOpen]);
+
+  const handleFunding = async (e: any) => {
+    e.preventDefault();
+
+    await fundGoal(goalId, amount);
+
+    setIsOpen(false);
+    setAmount("");
+  };
 
   return (
     <dialog className={styles.fund}>
@@ -46,6 +53,14 @@ const GoalFundModal = ({
         />{" "}
         <div className={styles.fund__buttons}>
           <button
+            className={styles.fund__confirm}
+            onClick={(e) => {
+              handleFunding(e);
+            }}
+          >
+            Confirm
+          </button>
+          <button
             className={styles.fund__cancel}
             onClick={(e) => {
               e.preventDefault();
@@ -53,15 +68,6 @@ const GoalFundModal = ({
             }}
           >
             Cancel
-          </button>
-          <button
-            className={styles.fund__confirm}
-            onClick={(e) => {
-              e.preventDefault();
-              fundGoal(goalId, amount);
-            }}
-          >
-            Confirm
           </button>
         </div>
       </form>

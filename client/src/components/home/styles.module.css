@@ -6,6 +6,23 @@
     row-gap: 1.5rem;
 }
 
+.home__search {
+    outline: none;
+    border: solid 0.1rem var(--color-gray);
+    padding: 0.6rem 1rem;
+    border-radius: 2rem;
+    font-family: 'Public Sans';
+}
+
+.home__search:focus {
+    border-color: var(--color-gray-blue);
+}
+
+.home__activeGoals {
+    text-align: center;
+    font-size: 1.5rem;
+}
+
 .home__goals {
     display: flex;
     flex-direction: column;

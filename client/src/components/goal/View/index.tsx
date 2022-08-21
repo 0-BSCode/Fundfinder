@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, useEffect } from "react";
+import React, { ReactElement, useState } from "react";
 import { Goal } from "src/types/goal";
 import placeholderPic from "public/assets/images/image-restaurant.png";
 import profilePic from "public/assets/images/profile-sample.png";
@@ -43,6 +43,7 @@ const GoalView = ({ goal }: { goal: Goal }): ReactElement => {
           id={goal.id}
           maxAmount={goal.maxAmount}
           currAmount={goal.currentAmount}
+          deadline={goal.deadline}
         />
         <button
           className={styles.goal__fund}

@@ -1,37 +1,47 @@
-import React, { ReactElement, useContext, useEffect } from "react";
+import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { CrowdfundContext } from "src/context/CrowdfundContext";
 import { Goal } from "src/types/goal";
 import GoalCard from "../goal/Card";
-import Search from "./searchBar";
 import SetGoal from "./setGoal";
 import styles from "./styles.module.css";
-import { useRouter } from "next/router";
 
 const HomeComponent = (): ReactElement => {
-  const router = useRouter();
   const { goals } = useContext(CrowdfundContext);
+  const [filteredGoals, setFilteredGoals] = useState<Goal[]>(goals);
+  const [searchText, setSearchText] = useState<string>("");
 
   useEffect(() => {
-    const cardWrapper = document.querySelector(`.${styles.home__goals}`);
-    const cards = cardWrapper?.children;
+    console.log("GOALS from home");
+    console.log(goals);
 
-    // if (cards) {
-    //   for (var i = 0; i < cards.length; i++) {
-    //     cards[i].addEventListener("click", () => {
-    //       router.push(cards[i].id);
-    //     });
-    //   }
-    // }
-    console.log(cards);
-  }, [goals]);
+    if (goals) {
+      let finalGoals = goals.filter((goal: Goal) => goal.isActive === true);
+
+      if (searchText.length) {
+        finalGoals = finalGoals.filter((goal: Goal) =>
+          goal.title.toUpperCase().includes(searchText.toUpperCase())
+        );
+      }
+
+      setFilteredGoals(finalGoals);
+    }
+  }, [goals, searchText]);
 
   return (
     <div className={styles.home}>
       <SetGoal />
-      <Search />
+      <input
+        className={styles.home__search}
+        type={"text"}
+        placeholder={"Looking for something specific?"}
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
+      />
+      <h3 className={styles.home__activeGoals}>Active Goals</h3>
       <section className={styles.home__goals}>
-        {goals &&
-          goals.map((goal: Goal) => <GoalCard goal={goal} key={goal.id} />)}
+        {filteredGoals?.map((goal: Goal) => (
+          <GoalCard goal={goal} key={goal.id} />
+        ))}
       </section>
     </div>
   );

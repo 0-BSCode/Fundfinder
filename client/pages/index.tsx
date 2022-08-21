@@ -14,11 +14,6 @@ const Home: NextPage = () => {
   useEffect(() => {
     const checkForDeadline = async (goalList: Goal[]) => {
       goalList?.forEach(async (goal: Goal) => {
-        console.log(`ID: ${goal.id}`);
-        console.log(`DEADLINE PASSED: `, new Date() > goal.deadline);
-        console.log(`Date: ${new Date()}`);
-        console.log(`IS ACTIVE: ${goal.isActive}`);
-
         if (goal.deadline) {
           const deadlinePassed = new Date() > goal.deadline;
           const goalIsActive = goal.isActive;

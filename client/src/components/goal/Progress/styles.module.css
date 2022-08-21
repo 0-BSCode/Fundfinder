@@ -1,13 +1,13 @@
-.goal__progress {
-    margin-top: 1.5rem;
+.progress {
+    margin-top: 1.3rem;
 }
 
-.goal__percent {
+.progress__percent {
     font-size: 0.8rem;
     text-align: center;
 }
 
-.goal__progressBar {
+.progress__bar {
     margin-top: 0.5rem;
     -webkit-appearance: none;
     appearance: none;
@@ -18,7 +18,14 @@
     background-color: var(--color-dark-blue);
 }
 
-.goal__progressBar::-webkit-slider-thumb {
+.progress__bar::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
+}
+
+.progress__deadline {
+    margin-top: 0.4rem;
+    margin-bottom: 0.3rem;
+    text-align: center;
+    font-size: 0.7rem;
 }

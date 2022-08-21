@@ -1,17 +1,17 @@
 export interface Goal {
-    id?: number;
-    owner?: string;
-    picture?: string;
+    id: number;
+    owner: string;
+    picture: string;
 
-    title?: string;
-    description?: string;
-    details?: string;
-    maxAmount?: number;
-    currentAmount?: number;
+    title: string;
+    description: string;
+    details: string;
+    maxAmount: number;
+    currentAmount: number;
 
-    isActive?: boolean;
+    isActive: boolean;
     funderAddresses?: string[];
 
-    createdAt?: Date;
-    deadline?: Date;
+    createdAt: Date;
+    deadline: Date;
 }

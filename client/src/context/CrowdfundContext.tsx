@@ -106,9 +106,7 @@ export const CrowdfundProvider = ({
 
   const retrieveCurrentUser = async (accountId: string) => {
     if (typeof ethereum !== undefined) {
-      let user: User = {};
-
-      user = await retrieveUser(accountId);
+      let user: User = await retrieveUser(accountId);
 
       if (!user?.id?.length) {
         await createUser(accountId);
@@ -296,6 +294,9 @@ export const CrowdfundProvider = ({
     } catch (err) {
       parseErrorMessage(ContractActions.GOAL_RETRIEVE, err);
     }
+
+    console.log("GOALS");
+    console.log(goals);
 
     return goals;
   };

@@ -17,9 +17,6 @@ const GoalPage: NextPage = (): ReactElement => {
     return <p>Loading...</p>;
   }
 
-  console.log("Router query");
-  console.log(goalId);
-
   return <GoalView goal={goals[id]} />;
 };
 

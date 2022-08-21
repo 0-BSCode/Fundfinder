@@ -1,12 +1,12 @@
 export interface User {
-    id?: string;
+    id: string;
 
-    username?: string;
-    picture?: string;
-    activeGoalCount?: number;
+    username: string;
+    picture: string;
+    activeGoalCount: number;
     goals?: number[];
     goalsHelped?: number[];
 
-    exists?: boolean;
-    createdAt?: Date;
+    exists: boolean;
+    createdAt: Date;
 }

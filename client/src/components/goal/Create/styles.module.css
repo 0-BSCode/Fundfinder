@@ -1,5 +1,5 @@
 .create {
-    padding-inline: 1.5rem;
+    padding-inline: 1.3rem;
     margin-top: 2rem;
 }
 
@@ -46,6 +46,7 @@
     border-bottom: solid 0.1rem black;
     outline: none;
     font-size: 0.6rem;
+    padding-bottom: 0.2rem;
 }
 
 .create__input::placeholder {
@@ -59,6 +60,7 @@
     border-radius: 0.3rem;
     font-family: 'Public Sans';
     background-color: var(--color-light-gray);
+    height: 4rem;
 }
 
 .create__submit {
