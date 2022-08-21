@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useState, useEffect } from "react";
 import { Goal } from "src/types/goal";
 import placeholderPic from "public/assets/images/image-restaurant.png";
 import profilePic from "public/assets/images/profile-sample.png";
@@ -10,6 +10,10 @@ import GoalFundModal from "../FundModal";
 
 const GoalView = ({ goal }: { goal: Goal }): ReactElement => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    console.log(`IS OPEN: ${isOpen}`);
+  });
 
   return (
     <main className={styles.goal}>
@@ -53,7 +57,7 @@ const GoalView = ({ goal }: { goal: Goal }): ReactElement => {
         >
           Fund
         </button>
-        <GoalFundModal goalId={goal.id} isOpen={isOpen} />
+        <GoalFundModal goalId={goal.id} isOpen={isOpen} setIsOpen={setIsOpen} />
       </section>
     </main>
   );
