@@ -11,10 +11,6 @@ import GoalFundModal from "../FundModal";
 const GoalView = ({ goal }: { goal: Goal }): ReactElement => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  useEffect(() => {
-    console.log(`IS OPEN: ${isOpen}`);
-  });
-
   return (
     <main className={styles.goal}>
       <img

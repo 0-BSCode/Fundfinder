@@ -8,12 +8,19 @@ import GoalView from "src/components/goal/View";
 const GoalPage: NextPage = (): ReactElement => {
   const { goals } = useContext(CrowdfundContext);
   const router = useRouter();
-  const goalId = parseInt(router?.query?.goalId[0]);
+  const goalId = router?.query?.goalId;
+  let id;
+
+  if (goalId && goals) {
+    id = parseInt(goalId[0]);
+  } else {
+    return <p>Loading...</p>;
+  }
 
   console.log("Router query");
   console.log(goalId);
 
-  return <GoalView goal={goals[goalId]} />;
+  return <GoalView goal={goals[id]} />;
 };
 
 export default GoalPage;
