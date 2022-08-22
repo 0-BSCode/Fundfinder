@@ -1,0 +1,118 @@
+.profile {
+    padding-top: 3rem;
+    padding-inline: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile__title {
+    font-size: 1.5rem;
+
+}
+
+.profile__content {
+    margin-top: 2rem;
+    background-color: white;
+    border-radius: 0.6rem;
+    box-shadow: 0 0.1rem 0.5rem 0.01rem rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.profile__imgWrapper {
+    margin: 2rem 0;
+    width: 3.5rem;
+    aspect-ratio: 1/1;
+}
+
+.profile__img {
+    width: 100%;
+}
+
+.profile__infoWrapper {
+    color: white;
+    background-color: var(--color-dark-blue);
+    border-radius: inherit;
+    font-size: 0.7rem;
+    padding: 1rem;
+    width: inherit;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.8rem;
+}
+
+.profile__info {
+    display: flex;
+    column-gap: 1rem;
+}
+
+.profile__fields,
+.profile__values {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+}
+
+.profile__editName {
+    outline: var(--color-lime-green);
+    border: none;
+    border-bottom: solid 0.1rem var(--color-gray);
+    font-family: 'Public Sans';
+    background-color: inherit;
+    color: white;
+    font-size: inherit;
+}
+
+.profile__editBtn {
+    padding: 0.6rem 0;
+    background-color: var(--color-lime-green);
+    border: none;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+}
+
+.profile__editBtns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile__editBtns button {
+    border: none;
+    font-weight: 600;
+}
+
+.profile__editCancel {
+    background: none;
+    color: var(--color-gray);
+}
+
+.profile__editConfirm {
+    padding: 0.6rem 0;
+    color: white;
+    background-color: var(--color-lime-green);
+    width: 5rem;
+    border-radius: 1rem;
+}
+
+.profile__goalsSection {
+    margin-top: 3rem;
+}
+
+.profile__goalsTitle {
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.profile__goals {
+    margin-top: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    margin-bottom: 1.5rem;
+}

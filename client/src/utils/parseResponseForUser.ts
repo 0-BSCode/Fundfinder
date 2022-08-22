@@ -2,9 +2,9 @@ import { User } from "src/types/user"
 import parseNumberForDate from "./parseNumberForDate";
 
 const parseResponseForUser = (response: any): User => {
-    let user:User = {};
+    let user:User = {} as User;
 
-    if (response.length) {
+    if (response && response.length) {
         user.id = response[0],
         user.username = response[1],
         user.picture = response[2],

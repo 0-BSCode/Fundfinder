@@ -11,9 +11,6 @@ const HomeComponent = (): ReactElement => {
   const [searchText, setSearchText] = useState<string>("");
 
   useEffect(() => {
-    console.log("GOALS from home");
-    console.log(goals);
-
     if (goals) {
       let finalGoals = goals.filter((goal: Goal) => goal.isActive === true);
 

@@ -1,15 +1,30 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useState, useEffect, useContext } from "react";
+import { CrowdfundContext } from "src/context/CrowdfundContext";
 import { Goal } from "src/types/goal";
 import placeholderPic from "public/assets/images/image-restaurant.png";
 import profilePic from "public/assets/images/profile-sample.png";
 import styles from "./styles.module.css";
-import trimAddress from "src/utils/trimAddress";
+import trimUsername from "src/utils/trimUsername";
 import parseWeiToText from "src/utils/parseWeiToText";
 import GoalProgress from "../Progress";
 import GoalFundModal from "../FundModal";
+import Link from "next/link";
+import { User } from "src/types/user";
 
 const GoalView = ({ goal }: { goal: Goal }): ReactElement => {
+  const { retrieveUser } = useContext(CrowdfundContext);
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [ownerName, setOwnerName] = useState<string>(goal.owner);
+
+  useEffect(() => {
+    const retrieveOwnerName = async () => {
+      const owner: User = await retrieveUser(goal.owner);
+      setOwnerName(owner.username);
+    };
+
+    retrieveOwnerName();
+  }, [goal]);
 
   return (
     <main className={styles.goal}>
@@ -26,7 +41,9 @@ const GoalView = ({ goal }: { goal: Goal }): ReactElement => {
             alt={"Profile picture"}
             className={styles.goal__profPic}
           />
-          <p className={styles.goal__owner}>{trimAddress(goal.owner)}</p>
+          <Link href={`/users/${goal.owner}`}>
+            <p className={styles.goal__owner}>{trimUsername(ownerName, 20)}</p>
+          </Link>
           <p className={styles.goal__description}>{goal.description}</p>
         </div>
         <p className={styles.goal__details}>{goal.details}</p>

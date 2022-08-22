@@ -14,13 +14,15 @@ const Navbar = (): ReactElement => {
         <img className={styles.nav__logo} src={logo.src} alt={"Fundfinder"} />
       </Link>
       {currentUser?.id ? (
-        <button className={styles.nav__profile}>
-          <img
-            className={styles.nav__profilePic}
-            src={profile.src}
-            alt={"Profile picture"}
-          />
-        </button>
+        <Link href={`/users/${currentUser.id}`}>
+          <button className={styles.nav__profile}>
+            <img
+              className={styles.nav__profilePic}
+              src={profile.src}
+              alt={"Profile picture"}
+            />
+          </button>
+        </Link>
       ) : (
         <button
           onClick={(e) => {

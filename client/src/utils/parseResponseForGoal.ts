@@ -2,9 +2,9 @@ import { Goal } from "src/types/goal";
 import parseNumberForDate from "./parseNumberForDate";
 
 const parseResponseForGoal = (response: any): Goal => {
-    let goal:Goal = {};
+    let goal:Goal = {} as Goal;
 
-    if (response.length) {
+    if (response && response.length) {
         goal.id = response[0],
         goal.owner = response[1],
         goal.title = response[2],

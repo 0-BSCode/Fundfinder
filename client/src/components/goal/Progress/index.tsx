@@ -18,8 +18,7 @@ const GoalProgress = ({
     const slider = document.querySelector(
       `input[data-id="${id}"]`
     ) as HTMLInputElement;
-    console.log("SLIDER");
-    console.log(slider);
+
     const val = Math.floor((currAmount / maxAmount) * 100);
 
     slider.style.background = `linear-gradient(to right,
