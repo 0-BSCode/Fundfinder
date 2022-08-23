@@ -21,13 +21,15 @@ const GoalCard = ({ goal }: { goal: Goal }): ReactElement => {
         />
       </div>
       <div className={styles.card__content}>
-        <div className={styles.card__heading}>
-          <p className={styles.card__title}>{goal.title}</p>
-          <p className={styles.card__amount}>
-            {parseWeiToText(goal.maxAmount)}
-          </p>
+        <div className={styles.card__text}>
+          <div className={styles.card__heading}>
+            <p className={styles.card__title}>{goal.title}</p>
+            <p className={styles.card__amount}>
+              {parseWeiToText(goal.maxAmount)}
+            </p>
+          </div>
+          <p className={styles.card__description}>{goal.description}</p>
         </div>
-        <p className={styles.card__description}>{goal.description}</p>
         <GoalProgress
           id={goal.id}
           maxAmount={goal.maxAmount}

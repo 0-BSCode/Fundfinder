@@ -4,9 +4,9 @@ The future of crowdfunding is here! Leverage the power of blockchain technology 
 
 ## Upcoming Features
 1. Profile page
-   - Update profile picture and username
+   - Update profile picture
    - Display goals of account and goals helped
 2. Desktop design
 3. Redirect to goal view upon goal creation
-4. Update goal if funded
+4. Hot reload UI upon goal creation, funding, and user update
 5. Notifications based on events (e.g. goal creation and funding)

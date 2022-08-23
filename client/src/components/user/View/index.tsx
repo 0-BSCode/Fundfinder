@@ -15,11 +15,10 @@ const UserView = ({ user }: { user: User }): ReactElement => {
 
   const [username, setUsername] = useState<string>("Retrieving...");
 
-  const cancelEdit = async (e: any) => {
+  const confirmEdit = async (e: any) => {
     e.preventDefault();
     await updateUser(user.id, username, "");
     setIsEditing(false);
-    setUsername(user.username);
   };
 
   useEffect(() => {
@@ -78,6 +77,7 @@ const UserView = ({ user }: { user: User }): ReactElement => {
                 onClick={(e) => {
                   e.preventDefault();
                   setIsEditing(false);
+                  setUsername(user.username);
                 }}
               >
                 Cancel
@@ -85,7 +85,7 @@ const UserView = ({ user }: { user: User }): ReactElement => {
               <button
                 className={styles.profile__editConfirm}
                 onClick={(e) => {
-                  cancelEdit(e);
+                  confirmEdit(e);
                 }}
               >
                 Confirm

@@ -26,14 +26,17 @@ const HomeComponent = (): ReactElement => {
 
   return (
     <div className={styles.home}>
-      <SetGoal />
-      <input
-        className={styles.home__search}
-        type={"text"}
-        placeholder={"Looking for something specific?"}
-        value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
-      />
+      <div className={styles.home__header}>
+        <SetGoal />
+        <input
+          className={styles.home__search}
+          type={"text"}
+          placeholder={"Looking for something specific?"}
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
+      </div>
+
       <h3 className={styles.home__activeGoals}>Active Goals</h3>
       <section className={styles.home__goals}>
         {filteredGoals?.map((goal: Goal) => (

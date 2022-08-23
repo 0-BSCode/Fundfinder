@@ -19,7 +19,7 @@ const GoalsCreate = (): ReactElement => {
     const goalDate = parseTextForDateTime(deadline);
 
     await createGoal(title, description, details, "", amount, goalDate);
-    // router.push(`goals/${goals.length}`);
+    router.push("/");
   };
 
   return (

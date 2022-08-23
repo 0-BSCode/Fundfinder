@@ -6,12 +6,19 @@
     row-gap: 1.5rem;
 }
 
+.home__header {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.2rem;
+}
+
 .home__search {
     outline: none;
     border: solid 0.1rem var(--color-gray);
     padding: 0.6rem 1rem;
     border-radius: 2rem;
     font-family: 'Public Sans';
+    font-size: 0.7rem;
 }
 
 .home__search:focus {
@@ -28,4 +35,32 @@
     flex-direction: column;
     row-gap: 1.5rem;
     margin-bottom: 1rem;
+}
+
+@media screen and (min-width: 1024px) {
+    .home {
+        padding-inline: 6rem;
+    }
+    
+    .home__header {
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        column-gap: 1.2rem;
+    }
+
+    .home__search {
+        flex: 5;
+        font-size: 1rem;
+    }
+
+    .home__activeGoals {
+        margin-top: 1rem;
+        font-size: 2rem;
+    }
+
+    .home__goals {
+        flex-flow: row wrap;
+        row-gap: 2rem;
+        column-gap: 2rem;
+    }
 }

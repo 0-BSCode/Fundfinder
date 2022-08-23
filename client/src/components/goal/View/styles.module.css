@@ -113,3 +113,71 @@
     font-size: 1rem;
     font-weight: 700;
 }
+
+@media screen and (min-width: 1024px) {
+    .goal__imgContainer {
+        width: 100%;
+        aspect-ratio: 2.7/1;
+        overflow: hidden;
+    }
+
+    .goal__content {
+        padding-inline: 6rem;
+        padding-top: 3rem;
+    }
+
+    .goal__title {
+        font-size: 3rem;
+    }
+
+    .goal__heading {
+        margin-top: 1.5rem;
+    }
+
+    .goal__profPic {
+        width: 3.5rem;
+    }
+
+    .goal__owner {
+        font-size: 1.3rem;
+    }
+
+    .goal__description {
+        font-size: 0.9rem;
+        line-height: 1.1rem;
+        width: 70%;
+        margin-inline: auto;
+    }
+
+    .goal__details {
+        margin-top: 2rem;
+        font-size: 1.4rem;
+        line-height: 1.8rem;
+    }
+
+    .goal__divider {
+        margin-top: 2.5rem;
+        width: 40%;
+        margin-inline: auto;
+    }
+
+    .goal__funding {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .goal__amount {
+        flex: 1;
+        align-items: flex-start;
+        row-gap: 0.5rem;
+    }
+
+    .goal__maxAmount {
+        font-size: 2.5rem;
+    }
+
+    .goal__currAmount {
+        font-size: 1.5rem;
+    }
+}

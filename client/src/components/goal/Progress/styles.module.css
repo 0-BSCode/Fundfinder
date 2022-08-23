@@ -29,3 +29,21 @@
     text-align: center;
     font-size: 0.7rem;
 }
+
+@media screen and (min-width: 1024px) {
+    .progress {
+        flex: 3;
+    }
+
+    .progress__percent {
+        font-size: 0.6rem;
+    }
+
+    .progress__bar {
+        height: 0.6rem;
+    }
+
+    .progress__deadline {
+        font-size: 0.6rem;
+    }
+}

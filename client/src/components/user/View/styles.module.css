@@ -90,6 +90,7 @@
 .profile__editCancel {
     background: none;
     color: var(--color-gray);
+    font-size: 0.6rem;
 }
 
 .profile__editConfirm {
@@ -98,6 +99,7 @@
     background-color: var(--color-lime-green);
     width: 5rem;
     border-radius: 1rem;
+    font-size: 0.6rem;
 }
 
 .profile__goalsSection {

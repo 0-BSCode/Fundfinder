@@ -209,6 +209,8 @@ export const CrowdfundProvider = ({
       setIsLoading(true);
       await txHash.wait();
       setIsLoading(false);
+
+      setGoals(await retrieveAllGoals());
     } catch (err) {
       console.error(parseErrorMessage(ContractActions.GOAL_CREATE, err));
     }
