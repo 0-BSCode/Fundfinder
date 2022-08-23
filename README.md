@@ -6,7 +6,6 @@ The future of crowdfunding is here! Leverage the power of blockchain technology 
 1. Profile page
    - Update profile picture
    - Display goals of account and goals helped
-2. Desktop design
-3. Redirect to goal view upon goal creation
-4. Hot reload UI upon goal creation, funding, and user update
-5. Notifications based on events (e.g. goal creation and funding)
+2. Redirect to goal view upon goal creation
+3. Hot reload UI upon goal creation, funding, and user update
+4. Notifications based on events (e.g. goal creation and funding)
