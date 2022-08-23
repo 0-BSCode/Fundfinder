@@ -3,7 +3,7 @@
 The future of crowdfunding is here! Leverage the power of blockchain technology to quickly and securely create your own goals and have them funded by others. 
 
 ## Design
-![Landing Page](client/public/assets/design/Desktop%20(Home).png)
+![Landing Page](client/public/assets/design/Desktop%20(Landing).png)
 ![Home Page](client/public/assets/design/Desktop%20(Home).png)
 
 ## Upcoming Features
