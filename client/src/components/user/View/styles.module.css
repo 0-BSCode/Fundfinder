@@ -118,3 +118,66 @@
     row-gap: 1rem;
     margin-bottom: 1.5rem;
 }
+
+@media screen and (min-width: 1024px) {
+    .profile {
+        padding-top: 5rem;
+        padding-inline: 6rem;
+    }
+
+    .profile__title {
+        font-size: 2.5rem;
+    }
+
+    .profile__content {
+        flex-direction: row-reverse;
+    }
+
+    .profile__imgWrapper {
+        margin: 0;
+        padding: 0;
+        flex: 1;
+        aspect-ratio: inherit;
+        display: flex;
+    }
+
+    .profile__img {
+        width: 6rem;
+        margin-inline: auto;
+    }
+
+    .profile__infoWrapper {
+        flex: 2.5;
+        padding: 2rem;
+        font-size: 1.3rem;
+        row-gap: 2rem;
+    }
+
+    .profile__editBtn {
+        padding: 1rem 0;
+        border-radius: 3rem;
+        font-size: 1.5rem;
+    }
+
+    .profile__editCancel {
+        font-size: 1.2rem;
+    }
+    
+    .profile__editConfirm {
+        font-size: 1.2rem;
+        padding: 1rem 0;
+        border-radius: 2rem;
+        width: 10rem;
+    }
+
+    .profile__goalsTitle {
+        font-size: 2rem;
+    }
+
+    .profile__goals {
+        margin-top: 2rem;
+        flex-flow: row wrap;
+        row-gap: 1.5rem;
+        justify-content: space-between;
+    }
+}
